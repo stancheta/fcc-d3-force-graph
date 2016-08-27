@@ -28,7 +28,11 @@
       width = 850 - margin.left - margin.right,
       height = 700 - margin.top - margin.bottom;
 
-    var svg = d3.select('.chart').append('svg')
+    var nodes = data.nodes;
+    var links = data.links;
+    var chart = d3.select('.chart');
+
+    var svg = chart.append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
@@ -39,16 +43,12 @@
                 .attr('class', 'tooltip')
                 .style('opacity', 0);
 
-    var nodes = data.nodes;
-    var links = data.links;
-
     var force = d3.layout.force()
     .charge(-50)
     .linkDistance(30)
     .size([width, height])
     .nodes(nodes)
-    .links(links)
-    .start();
+    .links(links);
 
     var link = svg.append("g")
         .attr("class", "links")
@@ -58,11 +58,12 @@
       .attr("stroke-width", 1);
 
 
-    var node = svg.selectAll('.node')
+    var node = chart.select('.flagWrapper').selectAll('.node')
       .data(nodes)
-      .enter().append('circle')
-      .attr('class', 'node')
-      .attr('r', 5)
+      .enter().append('img')
+      .attr('class', function(d) { return 'flag flag-' + d.code; })
+      .attr('height', 11)
+      .attr('width', 16)
       .call(force.drag)
       .on('mouseover', function(d) {
            tooltip.transition()
@@ -71,8 +72,8 @@
            tooltip.html(
              '<strong>' + d.country + '</strong>'
             )
-            .style('left', (d3.event.pageX + 20) + 'px')
-            .style('top', (d3.event.pageY - 20) + 'px');
+            .style('left', (d3.event.pageX - 375) + 'px')
+            .style('top', (d3.event.pageY - 30) + 'px');
         })
         .on('mouseout', function() {
           tooltip.transition()
@@ -82,14 +83,15 @@
 
     force.on('tick', function() {
       node
-      .attr('cx', function(d) { return d.x; })
-      .attr('cy', function(d) { return d.y; });
+      .style('left', function(d) { return (d.x + 8) + 'px'; })
+      .style('top', function(d) { return (d.y + 10) + 'px'; });
       link
       .attr('x1', function(d) { return d.source.x; })
       .attr('y1', function(d) { return d.source.y; })
       .attr('x2', function(d) { return d.target.x; })
       .attr('y2', function(d) { return d.target.y; });
     });
+    force.start();
   };
 
   // setup

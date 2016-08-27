@@ -1,7 +1,8 @@
 .flag {
 	width: 16px;
 	height: 11px;
-	background-image:url(../img/flags.png);
+	background-image:url(https://steventancheta.com/assets/img/flags.png);
+  position: absolute;
 }
 
 .flag.flag-ad {background-position: -16px 0}

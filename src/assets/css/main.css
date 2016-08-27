@@ -22,7 +22,9 @@ main {
   margin: 50px auto;
   /*padding: 1em;*/
   position: relative;
-  /*width: 915px;*/
+  height: 700px;
+
+  width: 850px;
 }
 
 .links line {
@@ -41,6 +43,12 @@ h1 {
 svg {
   background: #ffe;
   padding: 1em;
+}
+
+.flagWrapper {
+  position: absolute;
+  left: 100px;
+  top: 100px;
 }
 
 .tooltip {
